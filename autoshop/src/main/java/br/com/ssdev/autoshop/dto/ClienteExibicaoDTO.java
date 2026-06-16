@@ -1,18 +1,19 @@
 package br.com.ssdev.autoshop.dto;
 
-import br.com.ssdev.autoshop.model.CarroModel;
-import br.com.ssdev.autoshop.model.ClienteModel;
-import br.com.ssdev.autoshop.model.EnderecoModel;
+import br.com.ssdev.autoshop.models.CarroModel;
+import br.com.ssdev.autoshop.models.ClienteModel;
+import br.com.ssdev.autoshop.models.EnderecoModel;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record ClienteExibicaoDTO(
         Long clienteId,
         String nome,
         String cpf,
         String email,
-        CarroModel carro,
-        EnderecoModel endereco,
+        List<CarroModel> carro,
+        List<EnderecoModel> endereco,
         LocalDate dtNascimento,
         String telefone
 ) {
@@ -22,8 +23,8 @@ public record ClienteExibicaoDTO(
                 clienteModel.getNome(),
                 clienteModel.getCpf(),
                 clienteModel.getEmail(),
-                clienteModel.getCarro(),
-                clienteModel.getEnderecoModel(),
+                clienteModel.getCarros(),
+                clienteModel.getEnderecos(),
                 clienteModel.getDtNascimento(),
                 clienteModel.getTelefone()
         );

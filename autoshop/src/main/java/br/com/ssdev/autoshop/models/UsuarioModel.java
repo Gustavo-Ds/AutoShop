@@ -1,4 +1,4 @@
-package br.com.ssdev.autoshop.model;
+package br.com.ssdev.autoshop.models;
 
 
 import jakarta.persistence.*;
@@ -11,22 +11,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "TBL_USUARIOS")
+@Table(name = "usuarios")
 @Entity
 public class UsuarioModel {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_USUARIO_ID"
+            generator = "seq_usuarios_id"
     )
     @SequenceGenerator(
-            name = "SEQ_USUARIO_ID",
-            sequenceName = "SEQ_USAURIO_ID",
+            name = "seq_usuarios_id",
+            sequenceName = "seq_usuarios_id",
             allocationSize = 1
     )
-    @Column(name = "USUARIO_ID")
+    @Column(name = "usuario_id")
     private Long usuarioId;
     private String nome;
+    private String email;
     private String senha;
-    private UsuarioRole papel;
+    @Enumerated(EnumType.STRING)
+    private UsuarioRole funcao;
 }
+
+

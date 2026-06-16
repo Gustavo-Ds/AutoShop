@@ -1,4 +1,4 @@
-package br.com.ssdev.autoshop.model;
+package br.com.ssdev.autoshop.models;
 
 
 import jakarta.persistence.*;
@@ -7,30 +7,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "TBL_CARRO")
+@Table(name = "carros")
 public class CarroModel {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_CARRO_ID"
+            generator = "seq_carro_id"
     )
     @SequenceGenerator(
-            name = "SEQ_CARRO_ID",
-            sequenceName = "SEQ_CARRO_ID",
+            name = "seq_carro_id",
+            sequenceName = "seq_carro_id",
             allocationSize = 1
     )
-    @Column(name = "CARRO_ID")
+    @Column(name = "carro_id")
     private long carroId;
+    @OneToMany(mappedBy = "carro")
+    private List<OrdemServicoModel> ordens;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private ClienteModel dono;
     private String marca;
     private String modelo;
     private String cor;
     private String placa;
     private String versao;
-    private String vin;
-
+    private String chassi;
+    private String cambio;
 }

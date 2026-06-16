@@ -1,7 +1,7 @@
 package br.com.ssdev.autoshop.dto;
 
-import br.com.ssdev.autoshop.model.CarroModel;
-import br.com.ssdev.autoshop.model.EnderecoModel;
+import br.com.ssdev.autoshop.models.CarroModel;
+import br.com.ssdev.autoshop.models.EnderecoModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

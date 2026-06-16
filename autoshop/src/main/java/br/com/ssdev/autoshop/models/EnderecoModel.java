@@ -1,4 +1,4 @@
-package br.com.ssdev.autoshop.model;
+package br.com.ssdev.autoshop.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,22 +10,25 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name ="TBL_ENDERECO")
+@Table(name ="enderecos")
 @Entity
 public class EnderecoModel {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_ENDERECO_ID"
+            generator = "seq_endereco_id"
     )
     @SequenceGenerator(
-            name = "SEQ_ENDERECO_ID",
-            sequenceName = "SEQ_ENDERECO_ID",
+            name = "seq_endereco_id",
+            sequenceName = "seq_endereco_id",
             allocationSize = 1
     )
-    @Column(name = "ENDERECO_ID")
+    @Column(name = "endereco_id")
     private Long enderecoId;
-    private String rua;
+    @ManyToOne
+    @JoinColumn(name = "enderecos")
+    private ClienteModel cliente;
+    private String logradouro;
     private String cidade;
     private String bairro;
     private String cep;
