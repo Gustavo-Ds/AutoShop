@@ -10,21 +10,26 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private static final String MESSAGE = "User not found";
 
     public UserResponseDTO create(UserRequestDTO userRequestDTO) {
         User user = new User();
-        BeanUtils.copyProperties(userRequestDTO, user);
-
+        BeanUtils.copyProperties(userRequestDTO,user);
+        user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
         if (userRequestDTO.role() != null && !userRequestDTO.role().isBlank()) {
             try {
                 user.setRole(UserRole.valueOf(userRequestDTO.role().toUpperCase()));
@@ -56,7 +61,7 @@ public class UserService {
         user.setName(userRequestDTO.name());
         user.setEmail(userRequestDTO.email());
         if (userRequestDTO.password() != null && !userRequestDTO.password().isBlank()) {
-            user.setPassword(userRequestDTO.password());
+            user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
         }
         if (userRequestDTO.role() != null && !userRequestDTO.role().isBlank()) {
             try {

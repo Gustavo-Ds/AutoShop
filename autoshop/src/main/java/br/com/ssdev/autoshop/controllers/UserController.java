@@ -21,8 +21,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-
     @GetMapping
     public ResponseEntity<Page<UserResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(userService.getAll(pageable));

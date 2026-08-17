@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,9 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
@@ -46,7 +50,7 @@ class UserServiceTest {
                 userId,
                 "John Doe",
                 "john.doe@example.com",
-                "secret123",
+                "encodedPass",
                 UserRole.USER
         );
         userRequestDTO = new UserRequestDTO(
@@ -61,6 +65,7 @@ class UserServiceTest {
     @Test
     @DisplayName("Should create user successfully")
     void create_Success() {
+        when(passwordEncoder.encode(any())).thenReturn("encodedPass");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         UserResponseDTO response = userService.create(userRequestDTO);
@@ -111,6 +116,7 @@ class UserServiceTest {
     @DisplayName("Should update user successfully")
     void update_Success() {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(any())).thenReturn("encodedPass");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         UserResponseDTO response = userService.update(userId, userRequestDTO);
