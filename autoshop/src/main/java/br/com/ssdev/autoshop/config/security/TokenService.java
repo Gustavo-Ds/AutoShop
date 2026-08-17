@@ -1,5 +1,6 @@
 package br.com.ssdev.autoshop.config.security;
 
+import br.com.ssdev.autoshop.exceptions.InvalidTokenException;
 import br.com.ssdev.autoshop.models.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -14,7 +15,7 @@ import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
-    @Value("${JWT}")
+    @Value("${JWT:my-secret-key-123456}")
     private String jwtSecret;
 
 
@@ -41,7 +42,7 @@ public class TokenService {
                     .getSubject();
 
         }catch (JWTVerificationException e){
-            return e.getMessage();
+            throw new InvalidTokenException("Invalid Token");
         }
     }
     public Instant generateExpires(){

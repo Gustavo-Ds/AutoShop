@@ -6,6 +6,7 @@ import br.com.ssdev.autoshop.exceptions.UserNotFoundException;
 import br.com.ssdev.autoshop.models.User;
 import br.com.ssdev.autoshop.models.UserRole;
 import br.com.ssdev.autoshop.repositories.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +23,8 @@ public class UserService {
 
     public UserResponseDTO create(UserRequestDTO userRequestDTO) {
         User user = new User();
-        user.setName(userRequestDTO.name());
-        user.setEmail(userRequestDTO.email());
-        user.setPassword(userRequestDTO.password());
+        BeanUtils.copyProperties(userRequestDTO, user);
+
         if (userRequestDTO.role() != null && !userRequestDTO.role().isBlank()) {
             try {
                 user.setRole(UserRole.valueOf(userRequestDTO.role().toUpperCase()));

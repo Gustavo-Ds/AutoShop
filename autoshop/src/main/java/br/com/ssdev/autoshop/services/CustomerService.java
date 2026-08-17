@@ -11,6 +11,7 @@ import br.com.ssdev.autoshop.models.User;
 import br.com.ssdev.autoshop.repositories.AddressRepository;
 import br.com.ssdev.autoshop.repositories.CustomerRepository;
 import br.com.ssdev.autoshop.repositories.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,9 +37,9 @@ public class CustomerService {
                 .orElseThrow(() -> new AddressNotFoundException("Address not found"));
 
         Customer customer = new Customer();
+        BeanUtils.copyProperties(customerRequestDTO, customer);
         customer.setUser(user);
         customer.setAddress(address);
-        customer.setPhone(customerRequestDTO.phone());
 
         customerRepository.save(customer);
         return new CustomerResponseDTO(customer);

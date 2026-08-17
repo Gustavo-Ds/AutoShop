@@ -5,6 +5,7 @@ import br.com.ssdev.autoshop.dto.AddressResponseDTO;
 import br.com.ssdev.autoshop.exceptions.AddressNotFoundException;
 import br.com.ssdev.autoshop.models.Address;
 import br.com.ssdev.autoshop.repositories.AddressRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,16 +22,10 @@ public class AddressService {
 
     public AddressResponseDTO create(AddressRequestDTO addressRequestDTO) {
         Address address = new Address();
-        address.setCep(addressRequestDTO.cep());
-        address.setStreet(addressRequestDTO.street());
-        address.setNeighborhood(addressRequestDTO.neighborhood());
-        address.setCity(addressRequestDTO.city());
-        address.setState(addressRequestDTO.state());
-        address.setNumber(addressRequestDTO.number());
-        address.setComplement(addressRequestDTO.complement());
+        BeanUtils.copyProperties(addressRequestDTO, address);
 
-        addressRepository.save(address);
-        return new AddressResponseDTO(address);
+        Address addressSaved = addressRepository.save(address);
+        return new AddressResponseDTO(addressSaved);
     }
 
     public Page<AddressResponseDTO> getAll(Pageable pageable) {
@@ -47,13 +42,7 @@ public class AddressService {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new AddressNotFoundException(MESSAGE));
 
-        address.setCep(addressRequestDTO.cep());
-        address.setStreet(addressRequestDTO.street());
-        address.setNeighborhood(addressRequestDTO.neighborhood());
-        address.setCity(addressRequestDTO.city());
-        address.setState(addressRequestDTO.state());
-        address.setNumber(addressRequestDTO.number());
-        address.setComplement(addressRequestDTO.complement());
+        BeanUtils.copyProperties(addressRequestDTO, address);
 
         addressRepository.save(address);
         return new AddressResponseDTO(address);
